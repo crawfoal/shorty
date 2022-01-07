@@ -2,7 +2,7 @@ defmodule Shorty.RouterTest do
   use ExUnit.Case, async: true
   use Plug.Test
 
-  alias Shorty.Router
+  alias Shorty.{Router, Urls}
 
   @opts Router.init([])
 
@@ -38,5 +38,17 @@ defmodule Shorty.RouterTest do
     assert String.match?(conn.resp_body, ~r/Great! You can now access/)
     assert String.match?(conn.resp_body, ~r/#{"https://foo.bar.com/path"}/)
     assert String.match?(conn.resp_body, ~r/#{"http://localhost:4001/"}\w+/)
+  end
+
+  test "GET /:sid redirects to long url" do
+    long_url = "http://host.com/some-really-long-path"
+    short_url = Urls.create(long_url)
+
+    conn = conn(:get, URI.parse(short_url).path)
+
+    conn = Router.call(conn, @opts)
+
+    assert conn.state == :sent
+    assert conn.status == 303
   end
 end

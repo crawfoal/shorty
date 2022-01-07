@@ -16,4 +16,8 @@ defmodule Shorty.Url do
   def short_url_from_id(id) do
     @host <> Integer.to_string(id, @base)
   end
+
+  def id_from_sid(sid) do
+    String.to_integer(sid, @base)
+  end
 end

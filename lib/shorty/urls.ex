@@ -11,4 +11,12 @@ defmodule Shorty.Urls do
     |> Url.id_from_short_url()
     |> Store.get_url()
   end
+
+  def find_by_sid(sid) do
+    Url.id_from_sid(sid)
+    |> Store.get_url()
+
+  rescue
+    ArgumentError -> nil
+  end
 end
