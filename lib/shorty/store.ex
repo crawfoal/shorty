@@ -1,29 +1,34 @@
 defmodule Shorty.Store do
   use Agent
 
+  alias Shorty.Url
+
   def start_link(_opts) do
     Agent.start_link(fn -> %{count: 0, urls: %{}} end, name: __MODULE__)
   end
 
-  def put(url) do
+  def put(long_url) do
     calling_pid = self()
 
     Agent.update(__MODULE__, fn %{count: count, urls: urls} = store ->
-      send(calling_pid, {:url_id, url, count})
-      %{ store | count: count + 1, urls: Map.put(urls, count, url) }
+      url = Url.new(count, long_url)
+      send(calling_pid, {:url_data, long_url, url})
+      %{ store | count: count + 1, urls: Map.put(urls, url.id, url) }
     end)
 
     receive do
-      {:url_id, ^url, id} -> id
+      {:url_data, ^long_url, url} -> url
     end
   end
 
-  def put(url, id) do
+  def put(long_url, id) do
+    url = Url.new(id, long_url)
+
     Agent.update(__MODULE__, fn %{count: count, urls: urls} = store ->
       %{ store | count: count + 1, urls: Map.put(urls, id, url) }
     end)
 
-    id
+    url
   end
 
   def get_url(id) when is_integer(id) do
