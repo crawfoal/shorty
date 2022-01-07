@@ -50,5 +50,6 @@ defmodule Shorty.RouterTest do
 
     assert conn.state == :sent
     assert conn.status == 303
+    assert get_resp_header(conn, "location") == [ long_url ]
   end
 end
