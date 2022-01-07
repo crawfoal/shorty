@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Shorty</title>
+  </head>
+  <body>
+    <div>
+      Great! You can now access
+      <%= long_url %>
+      at
+      <%= short_url %>
+    </div>
+  </body>
+</html>

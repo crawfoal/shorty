@@ -25,4 +25,18 @@ defmodule Shorty.RouterTest do
     assert conn.status == 200
     assert String.match?(conn.resp_body, ~r/What would you like to shorten today\?/)
   end
+
+  test "POST /urls accepts form encoded data and returns short url" do
+    conn =
+      conn(:post, "/urls", "long_url=https%3A%2F%2Ffoo.bar.com%2Fpath")
+      |> put_req_header("content-type", "application/x-www-form-urlencoded")
+
+    conn = Router.call(conn, @opts)
+
+    assert conn.state == :sent
+    assert conn.status == 201
+    assert String.match?(conn.resp_body, ~r/Great! You can now access/)
+    assert String.match?(conn.resp_body, ~r/#{"https://foo.bar.com/path"}/)
+    assert String.match?(conn.resp_body, ~r/#{"http://shorty.com/"}\w+/)
+  end
 end
