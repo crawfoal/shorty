@@ -15,4 +15,14 @@ defmodule Shorty.RouterTest do
     assert conn.status == 404
     assert conn.resp_body == "oops"
   end
+
+  test "root route is defined" do
+    conn = conn(:get, "/")
+
+    conn = Router.call(conn, @opts)
+
+    assert conn.state == :sent
+    assert conn.status == 200
+    assert conn.resp_body == "home"
+  end
 end
