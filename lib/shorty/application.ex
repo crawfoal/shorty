@@ -8,7 +8,8 @@ defmodule Shorty.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      {Plug.Cowboy, scheme: :http, plug: Shorty.Router, options: [port: 4001]}
+      {Plug.Cowboy, scheme: :http, plug: Shorty.Router, options: [port: 4001]},
+      Shorty.Store
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

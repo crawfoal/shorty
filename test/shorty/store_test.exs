@@ -3,18 +3,13 @@ defmodule Shorty.StoreTest do
 
   alias Shorty.Store
 
-  setup do
-    {:ok, store} = Store.start_link([])
-    %{store: store}
-  end
-
   describe "put/2" do
-    test "stores url by id", %{store: store} do
+    test "stores url by id" do
       long_url = "http://host.com/some-long-path"
-      assert Store.get_url(store, 999) == nil
+      assert Store.get_url(999) == nil
 
-      Store.put(store, long_url, 999)
-      assert ^long_url = Store.get_url(store, 999)
+      Store.put(long_url, 999)
+      assert ^long_url = Store.get_url(999)
     end
   end
 end
