@@ -2,7 +2,7 @@ defmodule Shorty.RouterTest do
   use ExUnit.Case, async: true
   use Plug.Test
 
-  alias Shorty.{Router, Urls}
+  alias Shorty.{Router, Url, Urls}
 
   @opts Router.init([])
 
@@ -42,7 +42,7 @@ defmodule Shorty.RouterTest do
 
   test "GET /:sid redirects to long url" do
     long_url = "http://host.com/some-really-long-path"
-    short_url = Urls.create(long_url)
+    short_url = Urls.create(long_url) |> Url.short_url()
 
     conn = conn(:get, URI.parse(short_url).path)
 

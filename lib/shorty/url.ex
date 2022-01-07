@@ -1,5 +1,5 @@
 defmodule Shorty.Url do
-  defstruct [:id, :long_url, :sid]
+  defstruct [:id, :long_url, :sid, visits: []]
 
   @base 36
   @host "http://localhost:4001/"
@@ -28,4 +28,10 @@ defmodule Shorty.Url do
   def new(id, long_url) do
     %__MODULE__{id: id, long_url: long_url, sid: sid_from_id(id)}
   end
+
+  def last_visit(%{ visits: [ last_visit | _rest ] }), do: last_visit
+
+  def last_visit(%{ visits: [] }), do: nil
+
+  def num_visits(%{visits: visits}), do: Enum.count(visits)
 end

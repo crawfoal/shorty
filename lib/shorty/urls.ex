@@ -3,7 +3,6 @@ defmodule Shorty.Urls do
 
   def create(long_url) do
     Store.put(long_url)
-    |> Url.short_url()
   end
 
   def find_by_short_url(short_url) do
@@ -16,13 +15,13 @@ defmodule Shorty.Urls do
   end
 
   def find_by_sid(sid) do
-    url =
-      Url.id_from_sid(sid)
-      |> Store.get_url()
-
-    url.long_url
-
+    Url.id_from_sid(sid)
+    |> Store.get_url()
   rescue
     ArgumentError -> nil
+  end
+
+  def record_visit(url, datetime) do
+    Store.put_visit(url.id, datetime)
   end
 end

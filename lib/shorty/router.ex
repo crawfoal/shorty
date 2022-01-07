@@ -5,7 +5,7 @@ defmodule Shorty.Router do
   plug Plug.Parsers, parsers: [:urlencoded], pass: ["text/*"]
   plug :dispatch
 
-  alias Shorty.Urls
+  alias Shorty.{ Url, Urls }
 
   @template_dir "lib/shorty/templates"
 
@@ -15,7 +15,7 @@ defmodule Shorty.Router do
 
   post "/urls" do
     long_url = conn.body_params["long_url"]
-    short_url = Urls.create(long_url)
+    short_url = Urls.create(long_url) |> Url.short_url()
     conn
     |> put_status(201)
     |> render("urls/show.html", [long_url: long_url, short_url: short_url])
@@ -25,12 +25,14 @@ defmodule Shorty.Router do
     case Urls.find_by_sid(sid) do
       nil ->
         send_resp(conn, 404, "oops")
-      long_url ->
-        html = Plug.HTML.html_escape(long_url)
+      url ->
+        Urls.record_visit(url, DateTime.utc_now())
+
+        html = Plug.HTML.html_escape(url.long_url)
         body = "<html><body>You are being <a href=\"#{html}\">redirected</a>.</body></html>"
 
         conn
-        |> put_resp_header("location", long_url)
+        |> put_resp_header("location", url.long_url)
         |> send_resp(303, body)
     end
   end

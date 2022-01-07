@@ -31,6 +31,14 @@ defmodule Shorty.Store do
     url
   end
 
+  def put_visit(id, datetime) do
+    Agent.update(__MODULE__, fn %{urls: %{^id => url} = urls} = store ->
+      url_with_visit = %{ url | visits: [ datetime | url.visits ] }
+      updated_urls = Map.put(urls, id, url_with_visit)
+      %{ store | urls: updated_urls }
+    end)
+  end
+
   def get_url(id) when is_integer(id) do
     Agent.get(__MODULE__, fn %{urls: urls} -> Map.get(urls, id) end)
   end
