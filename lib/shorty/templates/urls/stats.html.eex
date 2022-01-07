@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Shorty</title>
+  </head>
+  <body>
+    <div>
+      Short URL: <%= Shorty.Url.short_url(url) %>
+    </div>
+    <div>
+      Long URL: <%= url.long_url %>
+    </div>
+    <div>
+      Number of Times Used: <%= Shorty.Url.num_visits(url) %>
+    </div>
+    <div>
+      Last Time Used: <%= Shorty.Url.last_visit(url) %>
+    </div>
+  </body>
+</html>

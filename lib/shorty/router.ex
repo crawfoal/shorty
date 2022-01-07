@@ -21,10 +21,19 @@ defmodule Shorty.Router do
     |> render("urls/show.html", [long_url: long_url, short_url: short_url])
   end
 
+  get "/:sid/stats" do
+    case Urls.find_by_sid(sid) do
+      nil ->
+        send_resp(conn, 404, "not found")
+      url ->
+        render(conn, "urls/stats.html", [url: url])
+    end
+  end
+
   get "/:sid" do
     case Urls.find_by_sid(sid) do
       nil ->
-        send_resp(conn, 404, "oops")
+        send_resp(conn, 404, "not found")
       url ->
         Urls.record_visit(url, DateTime.utc_now())
 
@@ -38,7 +47,7 @@ defmodule Shorty.Router do
   end
 
   match _ do
-    send_resp(conn, 404, "oops")
+    send_resp(conn, 404, "not found")
   end
 
   defp render(%{status: status} = conn, template, assigns \\ []) do
