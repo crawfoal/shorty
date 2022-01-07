@@ -4,11 +4,23 @@ defmodule Shorty.Router do
   plug :match
   plug :dispatch
 
+  @template_dir "lib/shorty/templates"
+
   get "/" do
-    send_resp(conn, 200, "home")
+    render(conn, "index.html")
   end
 
   match _ do
     send_resp(conn, 404, "oops")
+  end
+
+  defp render(%{status: status} = conn, template, assigns \\ []) do
+    body =
+      @template_dir
+      |> Path.join(template)
+      |> String.replace_suffix(".html", ".html.eex")
+      |> EEx.eval_file(assigns)
+
+    send_resp(conn, (status || 200), body)
   end
 end

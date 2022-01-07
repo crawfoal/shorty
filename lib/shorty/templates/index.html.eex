@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Shorty</title>
+  </head>
+  <body>
+    <div>
+      <label for="long_url">What would you like to shorten today?</label>
+      <input type="url" name="long_url" id="long_url">
+    </div>
+  </body>
+</html>

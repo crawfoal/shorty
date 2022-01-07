@@ -16,13 +16,13 @@ defmodule Shorty.RouterTest do
     assert conn.resp_body == "oops"
   end
 
-  test "root route is defined" do
+  test "root route presents template" do
     conn = conn(:get, "/")
 
     conn = Router.call(conn, @opts)
 
     assert conn.state == :sent
     assert conn.status == 200
-    assert conn.resp_body == "home"
+    assert String.match?(conn.resp_body, ~r/What would you like to shorten today\?/)
   end
 end
