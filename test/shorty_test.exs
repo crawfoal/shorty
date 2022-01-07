@@ -2,7 +2,7 @@ defmodule ShortyTest do
   use ExUnit.Case
   doctest Shorty
 
-  test "greets the world" do
-    assert Shorty.hello() == :world
+  test "server_url/1" do
+    assert Shorty.server_url() == "http://localhost:4001/"
   end
 end

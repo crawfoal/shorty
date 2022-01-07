@@ -13,9 +13,10 @@ defmodule Shorty.Router do
 
   post "/urls" do
     long_url = conn.body_params["long_url"]
+    #short_url = Urls.create(long_url)
     conn
     |> put_status(201)
-    |> render("urls/show.html", [long_url: long_url, short_url: "http://shorty.com/abc123"])
+    |> render("urls/show.html", [long_url: long_url, short_url: "http://localhost:4001/abc123"])
   end
 
   match _ do

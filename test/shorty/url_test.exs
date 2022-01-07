@@ -10,4 +10,10 @@ defmodule Shorty.UrlTest do
       assert String.match?(Url.short_url(url), ~r/2T$/)
     end
   end
+
+  describe "id_from_short_url/1" do
+    test "it returns the id from the path" do
+      assert 101 = Url.id_from_short_url("http://host.com/2T")
+    end
+  end
 end

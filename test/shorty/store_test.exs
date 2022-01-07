@@ -8,7 +8,7 @@ defmodule Shorty.StoreTest do
       long_url = "http://host.com/some-long-path"
       assert Store.get_url(999) == nil
 
-      Store.put(long_url, 999)
+      assert 999 = Store.put(long_url, 999)
       assert ^long_url = Store.get_url(999)
     end
   end

@@ -3,16 +3,7 @@ defmodule Shorty do
   Documentation for `Shorty`.
   """
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Shorty.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  def server_url do
+    "http://localhost:4001/"
   end
 end

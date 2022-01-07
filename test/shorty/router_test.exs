@@ -37,6 +37,6 @@ defmodule Shorty.RouterTest do
     assert conn.status == 201
     assert String.match?(conn.resp_body, ~r/Great! You can now access/)
     assert String.match?(conn.resp_body, ~r/#{"https://foo.bar.com/path"}/)
-    assert String.match?(conn.resp_body, ~r/#{"http://shorty.com/"}\w+/)
+    assert String.match?(conn.resp_body, ~r/#{"http://localhost:4001/"}\w+/)
   end
 end

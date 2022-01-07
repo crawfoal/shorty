@@ -6,13 +6,24 @@ defmodule Shorty.Store do
   end
 
   def put(url) do
-    Agent.get(__MODULE__, fn %{count: count} -> put(url, count + 1) end)
+    calling_pid = self()
+
+    Agent.update(__MODULE__, fn %{count: count, urls: urls} = store ->
+      send(calling_pid, {:url_id, url, count})
+      %{ store | count: count + 1, urls: Map.put(urls, count, url) }
+    end)
+
+    receive do
+      {:url_id, ^url, id} -> id
+    end
   end
 
   def put(url, id) do
     Agent.update(__MODULE__, fn %{count: count, urls: urls} = store ->
       %{ store | count: count + 1, urls: Map.put(urls, id, url) }
     end)
+
+    id
   end
 
   def get_url(id) when is_integer(id) do
