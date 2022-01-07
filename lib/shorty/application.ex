@@ -8,8 +8,7 @@ defmodule Shorty.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Starts a worker by calling: Shorty.Worker.start_link(arg)
-      # {Shorty.Worker, arg}
+      {Plug.Cowboy, scheme: :http, plug: Shorty.Router, options: [port: 4001]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
